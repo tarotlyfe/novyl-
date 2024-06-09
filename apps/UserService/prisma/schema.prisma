@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Author {
+  bio       String?
+  createdAt DateTime         @default(now())
+  email     String?
+  id        String           @id @default(cuid())
+  name      String?
+  novels    Json?
+  password  String?
+  roles     EnumAuthorRoles?
+  updatedAt DateTime         @updatedAt
+  username  String?
+  usersId   String?
+}
+
+enum EnumAuthorRoles {
+  Option1
+}
