@@ -1,0 +1,33 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Character {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  name        String?
+  novel       Novel?   @relation(fields: [novelId], references: [id])
+  novelId     String?
+  role        String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Novel {
+  authorId   String?
+  chapters   Json?
+  characters Character[]
+  createdAt  DateTime    @default(now())
+  genre      String?
+  id         String      @id @default(cuid())
+  outlines   Json?
+  plots      Json?
+  summary    String?
+  title      String?
+  updatedAt  DateTime    @updatedAt
+}
