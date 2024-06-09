@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Chapter {
+  chapterNumber Int?
+  content       String?
+  createdAt     DateTime      @default(now())
+  id            String        @id @default(cuid())
+  novelId       String?
+  outlineItems  OutlineItem[]
+  scenes        Scene[]
+  title         String?
+  updatedAt     DateTime      @updatedAt
+}
+
+model OutlineItem {
+  chapter   Chapter? @relation(fields: [chapterId], references: [id])
+  chapterId String?
+  content   String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  outlineId String?
+  scene     Scene?   @relation(fields: [sceneId], references: [id])
+  sceneId   String?
+  title     String?
+  updatedAt DateTime @updatedAt
+}
+
+model Scene {
+  beats        Json?
+  chapter      Chapter?      @relation(fields: [chapterId], references: [id])
+  chapterId    String?
+  content      String?
+  createdAt    DateTime      @default(now())
+  id           String        @id @default(cuid())
+  outlineItems OutlineItem[]
+  title        String?
+  updatedAt    DateTime      @updatedAt
+}
